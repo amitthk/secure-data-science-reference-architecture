@@ -101,8 +101,9 @@ Resources:
               'Null':
                 'sagemaker:VpcSubnets': 'true'
           - Action:
-              - 'sagemaker:*'
-            Resource: '*'
+              - 'sagemaker:CreateProcessingJob'
+              - 'sagemaker:StopProcessingJob'
+            Resource: !Sub 'arn:aws:sagemaker:${AWS::Region}:${AWS::AccountId}:processing-job/*'
             Effect: Allow
             Condition:
               'ForAllValues:StringEqualsIfExists':
@@ -116,18 +117,63 @@ Resources:
                 'sagemaker:VpcSecurityGroupIds':
                   - Fn::ImportValue:
                       !Sub 'ds-sagemaker-sg-${ProjectName}-${EnvType}'
-          - Effect: Allow
-            Action:
-              - 'application-autoscaling:DeleteScalingPolicy'
-              - 'application-autoscaling:DeleteScheduledAction'
-              - 'application-autoscaling:DeregisterScalableTarget'
-              - 'application-autoscaling:DescribeScalableTargets'
-              - 'application-autoscaling:DescribeScalingActivities'
-              - 'application-autoscaling:DescribeScalingPolicies'
-              - 'application-autoscaling:DescribeScheduledActions'
-              - 'application-autoscaling:PutScalingPolicy'
-              - 'application-autoscaling:PutScheduledAction'
-              - 'application-autoscaling:RegisterScalableTarget'
+          - Action:
+              - 'sagemaker:CreateTrainingJob'
+              - 'sagemaker:StopTrainingJob'
+            Resource: !Sub 'arn:aws:sagemaker:${AWS::Region}:${AWS::AccountId}:training-job/*'
+            Effect: Allow
+            Condition:
+              'ForAllValues:StringEqualsIfExists':
+                'sagemaker:VpcSubnets':
+                  - Fn::ImportValue:
+                      !Sub 'ds-subnet1-${ProjectName}-${EnvType}'
+                  - Fn::ImportValue:
+                      !Sub 'ds-subnet2-${ProjectName}-${EnvType}'
+                  - Fn::ImportValue:
+                      !Sub 'ds-subnet3-${ProjectName}-${EnvType}'
+                'sagemaker:VpcSecurityGroupIds':
+                  - Fn::ImportValue:
+                      !Sub 'ds-sagemaker-sg-${ProjectName}-${EnvType}'
+          - Action:
+              - 'sagemaker:CreateHyperParameterTuningJob'
+              - 'sagemaker:StopHyperParameterTuningJob'
+            Resource: !Sub 'arn:aws:sagemaker:${AWS::Region}:${AWS::AccountId}:hyper-parameter-tuning-job/*'
+            Effect: Allow
+            Condition:
+              'ForAllValues:StringEqualsIfExists':
+                'sagemaker:VpcSubnets':
+                  - Fn::ImportValue:
+                      !Sub 'ds-subnet1-${ProjectName}-${EnvType}'
+                  - Fn::ImportValue:
+                      !Sub 'ds-subnet2-${ProjectName}-${EnvType}'
+                  - Fn::ImportValue:
+                      !Sub 'ds-subnet3-${ProjectName}-${EnvType}'
+                'sagemaker:VpcSecurityGroupIds':
+                  - Fn::ImportValue:
+                      !Sub 'ds-sagemaker-sg-${ProjectName}-${EnvType}'
+          - Action:
+              - 'sagemaker:CreateModel'
+              - 'sagemaker:DeleteModel'
+            Resource: !Sub 'arn:aws:sagemaker:${AWS::Region}:${AWS::AccountId}:model/*'
+            Effect: Allow
+            Condition:
+              'ForAllValues:StringEqualsIfExists':
+                'sagemaker:VpcSubnets':
+                  - Fn::ImportValue:
+                      !Sub 'ds-subnet1-${ProjectName}-${EnvType}'
+                  - Fn::ImportValue:
+                      !Sub 'ds-subnet2-${ProjectName}-${EnvType}'
+                  - Fn::ImportValue:
+                      !Sub 'ds-subnet3-${ProjectName}-${EnvType}'
+                'sagemaker:VpcSecurityGroupIds':
+                  - Fn::ImportValue:
+                      !Sub 'ds-sagemaker-sg-${ProjectName}-${EnvType}'
+          - Action:
+              - 'sagemaker:CreateTransformJob'
+              - 'sagemaker:StopTransformJob'
+            Resource: !Sub 'arn:aws:sagemaker:${AWS::Region}:${AWS::AccountId}:transform-job/*'
+            Effect: Allow
+          - Action:
               - 'cloudwatch:DeleteAlarms'
               - 'cloudwatch:DescribeAlarms'
               - 'cloudwatch:GetMetricData'
@@ -152,20 +198,14 @@ Resources:
               - 'ecr:GetAuthorizationToken'
               - 'ecr:GetDownloadUrlForLayer'
               - 'ecr:Describe*'
-              - 'elastic-inference:Connect'
               - 'iam:ListRoles'
+              - 'iam:GetRole'
               - 'kms:CreateGrant'
               - 'kms:Decrypt'
               - 'kms:DescribeKey'
               - 'kms:Encrypt'
               - 'kms:GenerateDataKey'
               - 'kms:ListAliases'
-              - 'lambda:ListFunctions'
-              - 'logs:CreateLogGroup'
-              - 'logs:CreateLogStream'
-              - 'logs:DescribeLogStreams'
-              - 'logs:GetLogEvents'
-              - 'logs:PutLogEvents'
               - 'sns:ListTopics'
               - 'codecommit:BatchGetRepositories'
               - 'codecommit:GitPull'
@@ -184,9 +224,24 @@ Resources:
               - 'codecommit:CreateRepository'
               - 'codecommit:GetRepository'
               - 'codecommit:ListRepositories'
+              - 'sagemaker:Describe*'
+              - 'sagemaker:List*'
+              - 'sagemaker:Search'
+              - 'sagemaker:*Tags'
             Resource: '*'
-          - Effect: Allow
-            Action:
+            Effect: Allow
+          - Action:
+              - 'logs:GetLogEvents'
+              - 'logs:PutLogEvents'
+            Effect: Allow
+            Resource: !Sub 'arn:aws:logs:*:*:log-group:/aws/sagemaker/*:log-stream:*'
+          - Action:
+              - 'logs:CreateLogGroup'
+              - 'logs:CreateLogStream'
+              - 'logs:DescribeLogStreams'
+            Resource: !Sub 'arn:aws:logs:*:*:log-group:/aws/sagemaker/*'
+            Effect: Allow
+          - Action:
               - 'ecr:SetRepositoryPolicy'
               - 'ecr:CompleteLayerUpload'
               - 'ecr:BatchDeleteImage'
@@ -196,8 +251,8 @@ Resources:
               - 'ecr:DeleteRepository'
               - 'ecr:PutImage'
             Resource: 'arn:aws:ecr:*:*:repository/*sagemaker*'
-          - Effect: Allow
-            Action:
+            Effect: Allow
+          - Action:
               - 's3:GetObject'
               - 's3:PutObject'
               - 's3:DeleteObject'
@@ -206,6 +261,7 @@ Resources:
               - !Sub 'arn:aws:s3:::ds-data-bucket-${ProjectName}-${EnvType}-*/*'
               - !Sub 'arn:aws:s3:::ds-model-bucket-${ProjectName}-${EnvType}-*'
               - !Sub 'arn:aws:s3:::ds-model-bucket-${ProjectName}-${EnvType}-*/*'
+            Effect: Allow
           - Effect: Allow
             Action:
               - 's3:GetBucketLocation'
@@ -219,21 +275,6 @@ Resources:
             Condition:
               StringEqualsIgnoreCase:
                 's3:ExistingObjectTag/SageMaker': 'true'
-          - Effect: Allow
-            Action:
-              - 'lambda:InvokeFunction'
-            Resource:
-              - 'arn:aws:lambda:*:*:function:*SageMaker*'
-              - 'arn:aws:lambda:*:*:function:*sagemaker*'
-              - 'arn:aws:lambda:*:*:function:*Sagemaker*'
-              - 'arn:aws:lambda:*:*:function:*LabelingFunction*'
-          - Action: 'iam:CreateServiceLinkedRole'
-            Effect: Allow
-            Resource: >-
-              arn:aws:iam::*:role/aws-service-role/sagemaker.application-autoscaling.amazonaws.com/AWSServiceRoleForApplicationAutoScaling_SageMakerEndpoint
-            Condition:
-              StringLike:
-                'iam:AWSServiceName': sagemaker.application-autoscaling.amazonaws.com
           - Effect: Allow
             Action:
               - 'sns:Subscribe'

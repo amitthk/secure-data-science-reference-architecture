@@ -21,20 +21,9 @@ Amazon SageMaker is a powerful enabler and a key component of a data science env
 
 ## Getting Started
 
-Use the following links below to quickly deploy this repository to your AWS account.  No need to clone or fork the repository - the source code is available in Amazon S3 ready for deployment via CloudFormation.  To get started click one of the buttons below.
-
-| Region | Launch Template |
-|:---:|:---|
-| Oregon (us-west-2) | [![Deploy to AWS Oregon](https://camo.githubusercontent.com/9c49a15ad7e4c64cae6fc0d4448935283b5cd71a/68747470733a2f2f63646e2e7261776769742e636f6d2f6275696c646b6974652f636c6f7564666f726d6174696f6e2d6c61756e63682d737461636b2d627574746f6e2d7376672f6d61737465722f6c61756e63682d737461636b2e737667 "Deploy to AWS Oregon")](https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/create/review?stackName=secure-ds-core&templateURL=https://s3.amazonaws.com/sagemaker-workshop-cloudformation-us-west-2/quickstart/ds_administration.yaml) |
-| Ohio (us-east-2) | [![Deploy to AWS Ohio](https://camo.githubusercontent.com/9c49a15ad7e4c64cae6fc0d4448935283b5cd71a/68747470733a2f2f63646e2e7261776769742e636f6d2f6275696c646b6974652f636c6f7564666f726d6174696f6e2d6c61756e63682d737461636b2d627574746f6e2d7376672f6d61737465722f6c61756e63682d737461636b2e737667 "Deploy to AWS Ohio")](https://console.aws.amazon.com/cloudformation/home?region=us-east-2#/stacks/create/review?stackName=secure-ds-core&templateURL=https://s3.amazonaws.com/sagemaker-workshop-cloudformation-us-east-2/quickstart/ds_administration.yaml) |
-| N. Virginia (us-east-1) | [![Deploy to AWS N. Virginia](https://camo.githubusercontent.com/9c49a15ad7e4c64cae6fc0d4448935283b5cd71a/68747470733a2f2f63646e2e7261776769742e636f6d2f6275696c646b6974652f636c6f7564666f726d6174696f6e2d6c61756e63682d737461636b2d627574746f6e2d7376672f6d61737465722f6c61756e63682d737461636b2e737667 "Deploy to AWS N. Virginia")](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/review?stackName=secure-ds-core&templateURL=https://s3.amazonaws.com/sagemaker-workshop-cloudformation-us-east-1/quickstart/ds_administration.yaml) |
-| Ireland (eu-west-1) | [![Deploy to AWS Ireland](https://camo.githubusercontent.com/9c49a15ad7e4c64cae6fc0d4448935283b5cd71a/68747470733a2f2f63646e2e7261776769742e636f6d2f6275696c646b6974652f636c6f7564666f726d6174696f6e2d6c61756e63682d737461636b2d627574746f6e2d7376672f6d61737465722f6c61756e63682d737461636b2e737667 "Deploy to AWS Ireland")](https://console.aws.amazon.com/cloudformation/home?region=eu-west-1#/stacks/create/review?stackName=secure-ds-core&templateURL=https://s3.amazonaws.com/sagemaker-workshop-cloudformation-eu-west-1/quickstart/ds_administration.yaml) |
-| London (eu-west-2) | [![Deploy to AWS London](https://camo.githubusercontent.com/9c49a15ad7e4c64cae6fc0d4448935283b5cd71a/68747470733a2f2f63646e2e7261776769742e636f6d2f6275696c646b6974652f636c6f7564666f726d6174696f6e2d6c61756e63682d737461636b2d627574746f6e2d7376672f6d61737465722f6c61756e63682d737461636b2e737667 "Deploy to AWS London")](https://console.aws.amazon.com/cloudformation/home?region=eu-west-2#/stacks/create/review?stackName=secure-ds-core&templateURL=https://s3.amazonaws.com/sagemaker-workshop-cloudformation-eu-west-2/quickstart/ds_administration.yaml) |
-| Sydney (ap-southeast-2) | [![Deploy to AWS Sydney](https://camo.githubusercontent.com/9c49a15ad7e4c64cae6fc0d4448935283b5cd71a/68747470733a2f2f63646e2e7261776769742e636f6d2f6275696c646b6974652f636c6f7564666f726d6174696f6e2d6c61756e63682d737461636b2d627574746f6e2d7376672f6d61737465722f6c61756e63682d737461636b2e737667 "Deploy to AWS Sydney")](https://console.aws.amazon.com/cloudformation/home?region=ap-southeast-2#/stacks/create/review?stackName=secure-ds-core&templateURL=https://s3.amazonaws.com/sagemaker-workshop-cloudformation-ap-southeast-2/quickstart/ds_administration.yaml) |
-
 #### Step 1, as yourself
 
-Assuming you are signed into the AWS console, clicking one of the buttons above will take you to the AWS CloudFormation console for your selected region.  Accept the stack's default values, tick the boxes for `Capabilities` and click `Create stack`.  After approximately 5 minutes the stack will have deployed a Shared Services VPC to be leveraged across all data science environments and a PyPI mirror for pre-approved Python package hosting within your network.  The stack also will have deployed a product portfolio for creating data science enviornments.  
+Clone the repository on your local environment and follow the instructions in the `codebuild_build_readme.md` file.  After approximately 5 minutes the stack will have deployed a Shared Services VPC to be leveraged across all data science environments and a PyPI mirror for pre-approved Python package hosting within your network.  The stack also will have deployed a product portfolio for creating data science enviornments.  
 
 #### Step 2, as a project administrator
 
@@ -159,9 +148,7 @@ This repository contains the following files:
     ├── detective_control
     │   └── inspect_sagemaker_resource.py   # Lambda function to detect non-VPC-attached SageMaker resources
     └── project_template
-        ├── 00_SageMaker-SysOps-Workflow.ipynb          # Sample Jupyter notebbok to demonstrate security controls
-        ├── 01_SageMaker-DataScientist-Workflow.ipynb   # Sample Jupyter notebook to demonstrate secure ML lifecycle
-        ├── 02_SageMaker-DevOps-Workflow.ipynb          # Second half of a secure ML lifecycle
+        ├── SageMaker-Demo-Notebook.ipynb          # Sample Jupyter notebbok to demonstrate security controls
         ├── credit_card_default_data.xls                # Sample data set
         ├── util
             ├── __init__.py
@@ -169,6 +156,9 @@ This repository contains the following files:
 ```
 
 ## Further Reading
+
+This project is a variation of the following aws-sample: 
+ - https://github.com/aws-samples/secure-data-science-reference-architecture
 
 There is a multitude of material and resources available to you to advise you on how to best support your business using AWS services.  The following is a non-exhaustive list in no particular order:
 

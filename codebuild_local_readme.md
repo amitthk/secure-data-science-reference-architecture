@@ -22,10 +22,10 @@ docker pull ubuntu
 
 ## Execute the build
 
-To run CodeBuild locally use the shell script `codebuild_local.sh` to kick things off:
+To run CodeBuild locally use the shell script `codebuild_build.sh` to kick things off:
 
 ```bash
-./codebuild_local.sh -i 'ubuntu:latest' -c -a /tmp -s .
+./codebuild_build.sh -i 'ubuntu:latest' -c -a /tmp -s .
 ```
 
 This will install any dependencies such as zip, Python pip, and the AWS CLI.  It will then execute the `package_cloudformation.sh`
